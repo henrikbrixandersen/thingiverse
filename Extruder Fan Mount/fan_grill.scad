@@ -57,7 +57,7 @@ module fan_grill(fan_dia, thickness, screw_dia) {
 	
 			// Fan hole
 			translate([0, 0, -thickness]) {
-				cylinder(r = fan_dia / 2, h = thickness * 3);
+				cylinder(r = fan_dia / 2 - thickness, h = thickness * 3);
 			}
 		}
 
@@ -70,7 +70,7 @@ module fan_grill(fan_dia, thickness, screw_dia) {
 		}
 
 		// Rings
-		for (i = [10 : 10 : fan_dia]) {
+		for (i = [10 : 10 : fan_dia - thickness]) {
 			ring(i, thickness, thickness);
 		}
 	}
