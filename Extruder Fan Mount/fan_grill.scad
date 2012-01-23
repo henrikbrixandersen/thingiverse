@@ -4,9 +4,6 @@
  * License: CC BY-SA
  */
 
-// Rendering
-$fn = 100;
-
 module fan_grill(fan_dia, thickness, grill_thickness, screw_dia) {
 	module screw(dia, length) {
 		rotate([0, 0, 90]) {
@@ -18,8 +15,9 @@ module fan_grill(fan_dia, thickness, grill_thickness, screw_dia) {
 		rotate([0, 0, 90]) {
 			difference() {
 				cylinder(r = outer_dia / 2, height);
-				translate([0, 0, -height / 2])
-					cylinder(r = outer_dia / 2 - width, height * 2);
+				// Use outer_dia as parameter to ensure manifoldness of concentric rings
+				translate([0, 0, -outer_dia + height])
+					cylinder(r = outer_dia / 2 - width, outer_dia * 2 + height);
 			}
 		}
 	}
@@ -37,11 +35,6 @@ module fan_grill(fan_dia, thickness, grill_thickness, screw_dia) {
 
 	union() {
 		difference() {
-			// Main plate
-			//translate([0, 0, thickness / 2]) {
-			//	cube([fan_dia, fan_dia, thickness], center = true);
-			//}
-
 			// Outer frame
 			hull() {
 				for (i = [1, -1]) {
@@ -82,11 +75,12 @@ module fan_grill(fan_dia, thickness, grill_thickness, screw_dia) {
 					}
 				}
 		
-				// Rings
 				translate([0, 0, thickness / 2 + 0.25]) {
 					teardrop(10, thickness + 0.5);
 				}
-				for (i = [10 : 10 : fan_dia - grill_thickness]) {
+
+				// Rings
+				for (i = [20 : 10 : fan_dia - grill_thickness]) {
 					ring(i, grill_thickness, thickness);
 				}
 			}
@@ -106,4 +100,4 @@ module fan_grill(fan_dia, thickness, grill_thickness, screw_dia) {
 	}
 }
 
-fan_grill(40, 2, 1, 4);
+fan_grill(40, 2, 1.5, 4);
