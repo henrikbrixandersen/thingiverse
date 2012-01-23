@@ -7,7 +7,7 @@
 // Rendering
 $fn = 100;
 
-module fan_grill(fan_dia, thickness, screw_dia) {
+module fan_grill(fan_dia, thickness, grill_thickness, screw_dia) {
 	module screw(dia, length) {
 		rotate([0, 0, 90]) {
 			cylinder(r = dia / 2, length);
@@ -20,6 +20,17 @@ module fan_grill(fan_dia, thickness, screw_dia) {
 				cylinder(r = outer_dia / 2, height);
 				translate([0, 0, -height / 2])
 					cylinder(r = outer_dia / 2 - width, height * 2);
+			}
+		}
+	}
+
+	module teardrop(dia, thickness) {
+		union() {
+			cylinder(h = thickness, r = dia / 2, center = true);
+			intersection() {
+				rotate(45, [0, 0, 1]) cube([dia, dia, thickness], center = true);
+				translate([0, dia * 1.375, 0]) cube([dia, dia * 2, thickness],
+						 center = true);
 			}
 		}
 	}
@@ -57,23 +68,42 @@ module fan_grill(fan_dia, thickness, screw_dia) {
 	
 			// Fan hole
 			translate([0, 0, -thickness]) {
-				cylinder(r = fan_dia / 2 - thickness, h = thickness * 3);
+				cylinder(r = fan_dia / 2 - grill_thickness, h = thickness * 3);
 			}
 		}
 
-		// Cross
-		translate([0, 0, thickness / 2]) {
-			rotate([0, 0, 45]) {
-				cube([fan_dia, thickness, thickness], center = true);
-				cube([thickness, fan_dia, thickness], center = true);
+		difference() {
+			union() {
+				// Cross
+				translate([0, 0, thickness / 2]) {
+					rotate([0, 0, 45]) {
+						cube([fan_dia, grill_thickness, thickness], center = true);
+						cube([grill_thickness, fan_dia, thickness], center = true);
+					}
+				}
+		
+				// Rings
+				translate([0, 0, thickness / 2 + 0.25]) {
+					teardrop(10, thickness + 0.5);
+				}
+				for (i = [10 : 10 : fan_dia - grill_thickness]) {
+					ring(i, grill_thickness, thickness);
+				}
+			}
+
+			// Text cutout
+			translate([-16.5, -13, thickness]) {
+				linear_extrude(height = thickness * 3, center = true, convexity = 10)
+					import(file = "RepRap.dxf", layer = "Cutout");
 			}
 		}
 
-		// Rings
-		for (i = [10 : 10 : fan_dia - thickness]) {
-			ring(i, thickness, thickness);
+		// Text
+		translate([-16.5, -13, thickness / 2 + 0.25]) {
+			linear_extrude(height = thickness + 0.5, center = true, convexity = 10)
+				import(file = "RepRap.dxf", layer = "Text");
 		}
 	}
 }
 
-fan_grill(40, 1.5, 4);
+fan_grill(40, 2, 1, 4);
