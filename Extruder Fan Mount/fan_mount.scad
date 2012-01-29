@@ -7,8 +7,13 @@
 // Rendering
 $fn = 100;
 
-module fan_mount(fan_dia, screw_dia) {
+module fan_mount() {
+	fan_dia = 40;
+	screw_dia = 4;
 	thickness = 2;
+	bracket_width = 50;
+	bracket_x_offset = -5;
+	bracket_y_offset = 5;
 
 	module screw(dia, length) {
 		rotate([0, 0, 90]) {
@@ -31,10 +36,12 @@ module fan_mount(fan_dia, screw_dia) {
 						}
 					}
 				}
+
 				// Mounting bracket
 				hull() {
 					for (i = [1, -1]) {
-						translate([i * 50 / 2 - i * 4, 10, 0]) {
+						translate([i * bracket_width / 2 - i * screw_dia + bracket_x_offset,
+								 bracket_y_offset, 0]) {
 							cylinder(r = screw_dia, h = thickness);
 						}
 					}
@@ -43,7 +50,8 @@ module fan_mount(fan_dia, screw_dia) {
 		
 			// Mouting holes
 			for (i = [1, -1]) {
-				translate([i * 50 / 2 - i * 4, 10, -thickness]) {
+				translate([i * bracket_width / 2 - i * screw_dia + bracket_x_offset,
+						 bracket_y_offset, -thickness]) {
 					cylinder(r = screw_dia / 2, h = thickness * 3);
 				}
 			}
@@ -65,6 +73,12 @@ module fan_mount(fan_dia, screw_dia) {
 			}
 		}
 
+		// Mounting rod
+		translate([bracket_width / 2 - screw_dia + bracket_x_offset,
+				 bracket_y_offset, 0]) {
+			cylinder(r = screw_dia / 2, h = thickness * 6);
+		}
+
 		// Funnel
 		difference() {
 			cylinder(r1 = fan_dia / 2, r2 = 15, h = 20);
@@ -84,4 +98,4 @@ module fan_mount(fan_dia, screw_dia) {
 	}
 }
 
-fan_mount(40, 4);
+fan_mount();

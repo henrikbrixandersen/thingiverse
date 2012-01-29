@@ -4,6 +4,9 @@
  * License: CC BY-SA
  */
 
+// Rendering
+$fn = 100;
+
 module fan_grill(fan_dia, thickness, grill_thickness, screw_dia) {
 	module screw(dia, length) {
 		rotate([0, 0, 90]) {
@@ -85,19 +88,21 @@ module fan_grill(fan_dia, thickness, grill_thickness, screw_dia) {
 				}
 			}
 
-			// Text cutout
-			translate([-16.5, -13, thickness]) {
-				linear_extrude(height = thickness * 3, center = true, convexity = 10)
-					import(file = "RepRap.dxf", layer = "Cutout");
-			}
+			// Text cutouts
+			//translate([-16.75, -14, thickness]) {
+			//	scale(v = [0.12, 0.12, 1])
+			//		linear_extrude(height = thickness * 3, center = true, convexity = 10)
+			//			import(file = "RepRap.dxf", layer = "Cutouts");
+			//}
 		}
 
 		// Text
-		translate([-16.5, -13, thickness / 2 + 0.25]) {
-			linear_extrude(height = thickness + 0.5, center = true, convexity = 10)
-				import(file = "RepRap.dxf", layer = "Text");
-		}
+		//translate([-16.75, -14, thickness / 2 + 0.25]) {
+		//	scale(v = [0.12, 0.12, 1])
+		//		linear_extrude(height = thickness + 0.5, center = true, convexity = 10)
+		//			import(file = "RepRap.dxf", layer = "Text");
+		//}
 	}
 }
 
-fan_grill(40, 2, 1.5, 4);
+fan_grill(40, 3, 2, 4);
