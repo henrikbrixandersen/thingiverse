@@ -9,7 +9,7 @@ $fn = 100;
 
 module fan_mount(panel_thickness) {
 	fan_dia = 40;
-	screw_dia = 4;
+	screw_dia = 3;
 	nut_dia = 5.5;
 	nut_thickness = 2.5;
 
@@ -37,24 +37,40 @@ module fan_mount(panel_thickness) {
 				// Nut trap outlines
 				for (i = [1, -1]) {
 					for (j = [1, -1]) {
-						translate([i * fan_dia / 2 - i * screw_dia,
-								   j * fan_dia / 2 - j * screw_dia, 0]) {
+						translate([i * fan_dia / 2 - i * fan_dia / 10,
+								   j * fan_dia / 2 - j * fan_dia / 10, 0]) {
 							rotate([0, 0, 90]) {
-								cylinder(r = screw_dia, panel_thickness + nut_thickness);
+								cylinder(r = fan_dia / 10, panel_thickness + nut_thickness);
 							}
 						}
 					}
 				}
 
 				// Mounting bracket
-				//22 mm apart
+				for (i = [1, -1]) {
+					translate([fan_dia / 2, i * 11, panel_thickness / 2]) {
+						cube([5, 10, panel_thickness], center = true);
+					}
+				}
+				for (i = [1, -1]) {
+					translate([fan_dia / 2 + 3, i * 11, 5.1]) {
+						rotate([0, -80, 0]) {
+							difference() {
+								cube([10, 10, panel_thickness], center = true);
+								translate([0, 0, -panel_thickness]) {
+									cylinder(r = screw_dia / 2, panel_thickness * 3);
+								}
+							}
+						}
+					}
+				}
 			}
 
 			// Screw holes
 			for (i = [1, -1]) {
 				for (j = [1, -1]) {
-					translate([i * fan_dia / 2 - i * screw_dia,
-							   j * fan_dia / 2 - j * screw_dia,
+					translate([i * fan_dia / 2 - i * fan_dia / 10,
+							   j * fan_dia / 2 - j * fan_dia / 10,
 							 -panel_thickness]) {
 						rotate([0, 0, 90]) {
 							cylinder(r = screw_dia / 2, panel_thickness * 2 + nut_thickness * 2);
@@ -66,8 +82,8 @@ module fan_mount(panel_thickness) {
 			// Nut traps
 			for (i = [1, -1]) {
 				for (j = [1, -1]) {
-					translate([i * fan_dia / 2 - i * screw_dia,
-							   j * fan_dia / 2 - j * screw_dia,
+					translate([i * fan_dia / 2 - i * fan_dia / 10,
+							   j * fan_dia / 2 - j * fan_dia / 10,
 							   panel_thickness]) {
 						rotate([0, 0, i * j * 15]) {
 							nuttrap(nut_dia, nut_thickness * 2);
@@ -84,12 +100,21 @@ module fan_mount(panel_thickness) {
 
 		// Funnel
 		difference() {
-			cylinder(r1 = fan_dia / 2, r2 = 15, h = 40);
-			translate([0, 0, -0.5]) {
-				cylinder(r1 = fan_dia / 2 - panel_thickness, r2 = 15 - panel_thickness, h = 41);
+			translate([0, 0, -2]) {
+				rotate([0, -10, 0]) {
+					difference() {
+						cylinder(r1 = fan_dia / 2, r2 = 10, h = 40);
+						translate([0, 0, -0.5]) {
+							cylinder(r1 = fan_dia / 2 - panel_thickness, r2 = 10 - panel_thickness, h = 41);
+						}
+					}
+				}
+			}
+			translate([0, 0, -10]) {
+				cube([fan_dia * 3, fan_dia * 3, 20], center = true);
 			}
 		}
 	}
 }
 
-fan_mount(2);
+fan_mount(3.5);
