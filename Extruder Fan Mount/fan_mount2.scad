@@ -46,18 +46,30 @@ module fan_mount(panel_thickness) {
 					}
 				}
 
+				// Funnel
+				cylinder(r1 = fan_dia / 2, r2 = fan_dia / 2.25, h = 30);
+
 				// Mounting bracket
-				for (i = [1, -1]) {
-					translate([fan_dia / 2, i * 11, panel_thickness / 2]) {
-						cube([5, 10, panel_thickness], center = true);
-					}
-				}
-				for (i = [1, -1]) {
-					translate([fan_dia / 2 + 3, i * 11, 5.1]) {
-						rotate([0, -80, 0]) {
-							difference() {
-								cube([10, 10, panel_thickness], center = true);
-								translate([0, 0, -panel_thickness]) {
+				translate([12, 0, 12]) {
+					rotate([0, -65, 0]) {
+						difference() {
+							hull() {
+								union() {
+									// Mickey Mouse ears
+									for (i = [1, -1]) {
+										translate([22, i * 11, 0]) {
+											cylinder(r = screw_dia * 1.8, panel_thickness);
+										}
+									}
+									// Bracket
+									translate([8, 0, panel_thickness / 2]) {
+										cube([12, 25, panel_thickness], center = true);
+									}
+								}
+							}
+							// Screw holes
+							for (i = [1, -1]) {
+								translate([22, i * 11, -panel_thickness]) {
 									cylinder(r = screw_dia / 2, panel_thickness * 3);
 								}
 							}
@@ -92,29 +104,33 @@ module fan_mount(panel_thickness) {
 				}
 			}
 	
-			// Fan hole
-			translate([0, 0, -panel_thickness]) {
-				cylinder(r = fan_dia / 2 - panel_thickness, h = panel_thickness * 3);
+			// Funnel cut-out
+			translate([0, 0, -0.5]) {
+				cylinder(r1 = fan_dia / 2 - panel_thickness, r2 = fan_dia / 2.25 - panel_thickness, h = 31);
+			}
+
+			// Funnel cut-off
+			rotate([0, -65, 0]) {
+				translate([fan_dia / 2 - 5, 0, fan_dia]) {
+					cube([fan_dia, fan_dia, fan_dia], center = true);
+				}
 			}
 		}
 
-		// Funnel
-		difference() {
-			translate([0, 0, -2]) {
-				rotate([0, -10, 0]) {
-					difference() {
-						cylinder(r1 = fan_dia / 2, r2 = 10, h = 40);
-						translate([0, 0, -0.5]) {
-							cylinder(r1 = fan_dia / 2 - panel_thickness, r2 = 10 - panel_thickness, h = 41);
-						}
-					}
+
+		// Bed and extruder mock-up
+		%translate([38.5, 0, 43]) {
+			rotate([0, -65, 0]) {
+				cube([37 + 10, 10, 10], center = true);
+				translate([37 / 2, 0, 37 / 2]) {
+					cube([10, 10, 37 + 10], center = true);
 				}
-			}
-			translate([0, 0, -10]) {
-				cube([fan_dia * 3, fan_dia * 3, 20], center = true);
+				translate([0, 0, 43]) {
+					cube([100, 100, 2], center = true);
+				}
 			}
 		}
 	}
 }
 
-fan_mount(3.5);
+fan_mount(2.5);

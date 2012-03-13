@@ -105,4 +105,4 @@ module fan_grill(fan_dia, thickness, grill_thickness, screw_dia) {
 	}
 }
 
-fan_grill(40, 3, 2, 4);
+fan_grill(40, 2, 2, 4);
