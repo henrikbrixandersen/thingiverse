@@ -1,4 +1,6 @@
-/* 40x40 mm fan mount, part of http://www.thingiverse.com/thing:XXXXX
+/* Brix' Extruder Fan Mount, part of http://www.thingiverse.com/thing:19076
+ *
+ * A 40x40 mm fan mount for the Prusa V2 X-carriage.
  *
  * Copyright (c) 2012  Henrik Brix Andersen <henrik@brixandersen.dk>
  * License: CC BY-SA
