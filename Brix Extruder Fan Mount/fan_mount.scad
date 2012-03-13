@@ -9,7 +9,7 @@
 // Rendering
 $fn = 100;
 
-module fan_mount(panel_thickness) {
+module fan_mount(panel_thickness, mounting_hole_distance) {
 	fan_dia = 40;
 	screw_dia = 3;
 	nut_dia = 5.5;
@@ -59,7 +59,7 @@ module fan_mount(panel_thickness) {
 								union() {
 									// Mickey Mouse ears
 									for (i = [1, -1]) {
-										translate([22, i * 11, 0]) {
+										translate([22, i * mounting_hole_distance / 2, 0]) {
 											cylinder(r = screw_dia * 1.8, panel_thickness);
 										}
 									}
@@ -71,7 +71,7 @@ module fan_mount(panel_thickness) {
 							}
 							// Screw holes
 							for (i = [1, -1]) {
-								translate([22, i * 11, -panel_thickness]) {
+								translate([22, i * mounting_hole_distance / 2, -panel_thickness]) {
 									cylinder(r = screw_dia / 2, panel_thickness * 3);
 								}
 							}
@@ -121,7 +121,7 @@ module fan_mount(panel_thickness) {
 
 
 		// Bed and extruder mock-up
-		%translate([38.5, 0, 43]) {
+		*translate([38.5, 0, 43]) {
 			rotate([0, -65, 0]) {
 				cube([37 + 10, 10, 10], center = true);
 				translate([37 / 2, 0, 37 / 2]) {
@@ -135,4 +135,4 @@ module fan_mount(panel_thickness) {
 	}
 }
 
-fan_mount(2.5);
+fan_mount(2.5, 22);
