@@ -7,7 +7,7 @@
 // Rendering
 $fn = 100;
 
-module club_mate_badge(thickness, diameter) {
+module club_mate_badge(outer_thickness, inner_thickness, diameter) {
 	raw_diameter = 83.2556;
 	scale = diameter / raw_diameter;
 
@@ -18,22 +18,22 @@ module club_mate_badge(thickness, diameter) {
 			translate([-raw_diameter / 2, -raw_diameter / 2, 0]) {
 				difference() {
 					// Base
-					linear_extrude(height = thickness, center = false, convexity = 10)
+					linear_extrude(height = outer_thickness, center = false, convexity = 10)
 						import(file = "Club Mate.dxf", layer = "Base");
 	
 					// Outer spikes
-					translate([0, 0, thickness * 1/3]) {
+					translate([0, 0, outer_thickness * 1/3]) {
 						linear_extrude(height = thickness, center = false, convexity = 10)
 							import(file = "Club Mate.dxf", layer = "Outer");
 					}
 				}
 	
 				// Inner figure
-				linear_extrude(height = thickness, center = false, convexity = 10)
+				linear_extrude(height = inner_thickness, center = false, convexity = 10)
 					import(file = "Club Mate.dxf", layer = "Inner");
 			}
 		}
 	}
 }
 
-club_mate_badge(5, 50);
+club_mate_badge(5, 4, 50);
