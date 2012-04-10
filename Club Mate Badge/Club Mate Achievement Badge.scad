@@ -8,6 +8,7 @@
 $fn = 100;
 
 module club_mate_badge(outer_thickness, inner_thickness, diameter) {
+	// The Inkscape DXF exporter does not support dimensions, hardcode the DXF diameter here
 	raw_diameter = 83.2556;
 	scale = diameter / raw_diameter;
 
@@ -23,7 +24,7 @@ module club_mate_badge(outer_thickness, inner_thickness, diameter) {
 	
 					// Outer spikes
 					translate([0, 0, outer_thickness * 1/3]) {
-						linear_extrude(height = thickness, center = false, convexity = 10)
+						linear_extrude(height = outer_thickness, center = false, convexity = 10)
 							import(file = "Club Mate.dxf", layer = "Outer");
 					}
 				}
