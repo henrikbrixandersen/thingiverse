@@ -37,4 +37,4 @@ module club_mate_badge(outer_thickness, inner_thickness, diameter) {
 	}
 }
 
-club_mate_badge(5, 4, 50);
+club_mate_badge(5, 4, 110);
